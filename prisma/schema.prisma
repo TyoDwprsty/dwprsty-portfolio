@@ -1,0 +1,20 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider  = "postgresql"
+}
+
+model Project {
+  id              String   @id @default(uuid())
+  title           String
+  description     String
+  project_details String
+  techstack       String   // Can store comma-separated values
+  project_url     String
+  image_url       String?  // Drafted for later
+  created_at      DateTime @default(now())
+
+  @@map("projects")
+}
