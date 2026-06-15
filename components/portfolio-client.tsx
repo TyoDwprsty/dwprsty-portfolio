@@ -42,8 +42,45 @@ interface MappedProject {
   created_at: Date
 }
 
+type FormStatus = 'idle' | 'loading' | 'success' | 'error'
+
 export default function PortfolioClient({ projects }: { projects: Project[] }) {
   const [selectedProject, setSelectedProject] = useState<MappedProject | null>(null)
+
+  // Contact form state
+  const [formName, setFormName] = useState('')
+  const [formEmail, setFormEmail] = useState('')
+  const [formMessage, setFormMessage] = useState('')
+  const [formStatus, setFormStatus] = useState<FormStatus>('idle')
+  const [formError, setFormError] = useState('')
+
+  async function handleContactSubmit(e: React.FormEvent<HTMLFormElement>) {
+    e.preventDefault()
+    setFormStatus('loading')
+    setFormError('')
+
+    try {
+      const res = await fetch('/api/contact', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ name: formName, email: formEmail, message: formMessage }),
+      })
+      const data = await res.json()
+
+      if (!res.ok) {
+        setFormError(data.error || 'Something went wrong. Please try again.')
+        setFormStatus('error')
+      } else {
+        setFormStatus('success')
+        setFormName('')
+        setFormEmail('')
+        setFormMessage('')
+      }
+    } catch {
+      setFormError('Network error. Please check your connection and try again.')
+      setFormStatus('error')
+    }
+  }
 
   return (
     <div className="min-h-screen text-foreground">
@@ -292,37 +329,86 @@ export default function PortfolioClient({ projects }: { projects: Project[] }) {
               </div>
             </div>
 
-            <form className="space-y-4">
+            <form className="space-y-4" onSubmit={handleContactSubmit}>
               <div>
-                <label className="block text-sm font-medium text-primary mb-2">Name</label>
+                <label htmlFor="contact-name" className="block text-sm font-medium text-primary mb-2">Name</label>
                 <input
+                  id="contact-name"
                   type="text"
+                  required
+                  value={formName}
+                  onChange={(e) => setFormName(e.target.value)}
                   className="w-full px-4 py-2 bg-card border border-muted rounded focus:outline-none focus:border-primary transition-colors text-foreground"
                   placeholder="What you called as?"
+                  disabled={formStatus === 'loading'}
                 />
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-primary mb-2">Email</label>
+                <label htmlFor="contact-email" className="block text-sm font-medium text-primary mb-2">Email</label>
                 <input
+                  id="contact-email"
                   type="email"
+                  required
+                  value={formEmail}
+                  onChange={(e) => setFormEmail(e.target.value)}
                   className="w-full px-4 py-2 bg-card border border-muted rounded focus:outline-none focus:border-primary transition-colors text-foreground"
-                  placeholder="your.email@dwprsty.com"
+                  placeholder="your.email@example.com"
+                  disabled={formStatus === 'loading'}
                 />
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-primary mb-2">Message</label>
+                <label htmlFor="contact-message" className="block text-sm font-medium text-primary mb-2">Message</label>
                 <textarea
+                  id="contact-message"
                   rows={5}
+                  required
+                  value={formMessage}
+                  onChange={(e) => setFormMessage(e.target.value)}
                   className="w-full px-4 py-2 bg-card border border-muted rounded focus:outline-none focus:border-primary transition-colors text-foreground resize-none"
                   placeholder="Feel free to drop couple words about why you're here..."
+                  disabled={formStatus === 'loading'}
                 />
               </div>
 
-              <button className="w-full px-4 py-3 bg-primary text-primary-foreground font-semibold rounded hover:bg-accent transition-colors">
-                Send Message
-              </button>
+              {formStatus === 'error' && (
+                <motion.p
+                  initial={{ opacity: 0, y: -8 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  className="text-sm text-red-400 bg-red-400/10 border border-red-400/30 rounded px-4 py-2"
+                >
+                  {formError}
+                </motion.p>
+              )}
+
+              {formStatus === 'success' ? (
+                <motion.div
+                  initial={{ opacity: 0, scale: 0.95 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  className="w-full px-4 py-3 bg-green-500/10 border border-green-500/30 text-green-400 font-semibold rounded text-center"
+                >
+                  ✓ Message sent! I&apos;ll get back to you soon.
+                </motion.div>
+              ) : (
+                <button
+                  type="submit"
+                  disabled={formStatus === 'loading'}
+                  className="w-full px-4 py-3 bg-primary text-primary-foreground font-semibold rounded hover:bg-accent transition-colors disabled:opacity-60 disabled:cursor-not-allowed flex items-center justify-center gap-2"
+                >
+                  {formStatus === 'loading' ? (
+                    <>
+                      <svg className="animate-spin h-4 w-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                        <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
+                        <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8z" />
+                      </svg>
+                      Sending...
+                    </>
+                  ) : (
+                    'Send Message'
+                  )}
+                </button>
+              )}
             </form>
           </div>
         </div>
