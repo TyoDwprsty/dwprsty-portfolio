@@ -172,7 +172,7 @@ export default function PortfolioClient({ projects }: { projects: Project[] }) {
               className="space-y-6"
             >
               <div>
-                <h3 className="text-lg font-semibold text-primary mb-3">Skills</h3>
+                <h3 className="text-lg font-semibold font-mono text-primary mb-3">Skills</h3>
                 <div className="grid grid-cols-2 gap-2">
                   {[
                     'React',

@@ -4,6 +4,12 @@ import { useState, useEffect } from 'react'
 import { motion } from 'framer-motion'
 import Image from 'next/image'
 import { BioInspectionModal } from './bio-inspection-modal'
+import { Terminal } from 'lucide-react'
+import ReactIcon from './social-icon/React'
+import NextJsIcon from './social-icon/NextJs'
+import TypeScriptIcon from './social-icon/TypeScript'
+import NodeJsIcon from './social-icon/nodejs'
+import TailwindCSS from './social-icon/tailwindcss.svg'
 
 export function BioCard() {
   const [isInspecting, setIsInspecting] = useState(false)
@@ -119,16 +125,35 @@ export function BioCard() {
               </p>
 
               <div className="space-y-2">
-                <p className="text-xs font-semibold text-primary uppercase tracking-wider">Tech Stack</p>
+                <p className="text-xs font-semibold font-mono text-primary uppercase tracking-wider">Tech Stack</p>
                 <div className="flex flex-wrap gap-1.5">
-                  {['React', 'Next.js', 'TypeScript', 'Node.js'].map((tech) => (
-                    <span
-                      key={tech}
-                      className="px-2 py-0.5 bg-primary/10 text-secondary text-xs rounded border border-primary/30"
-                    >
-                      {tech}
-                    </span>
-                  ))}
+                  {['React', 'Next.js', 'TypeScript', 'Node.js'].map((tech) => {
+                    const getSkillIcon = (name: string) => {
+                      switch (name) {
+                        case 'React':
+                          return <ReactIcon size={12} className="text-primary mr-1" />
+                        case 'Next.js':
+                          return <NextJsIcon size={12} className="text-primary mr-1" />
+                        case 'Node.js':
+                          return <NodeJsIcon size={12} className="text-primary mr-1" />
+                        case 'Tailwind CSS':
+                          return <Image src={TailwindCSS} alt="Tailwind CSS" width={12} height={12} className="text-primary mr-1" />
+                        case 'TypeScript':
+                          return <TypeScriptIcon size={12} className="text-primary mr-1" />
+                        default:
+                          return <Terminal size={12} className="text-primary mr-1" />
+                      }
+                    }
+                    return (
+                      <span
+                        key={tech}
+                        className="flex items-center px-2 py-0.5 bg-primary/10 text-secondary text-xs rounded border border-primary/30"
+                      >
+                        {getSkillIcon(tech)}
+                        {tech}
+                      </span>
+                    )
+                  })}
                 </div>
               </div>
 
