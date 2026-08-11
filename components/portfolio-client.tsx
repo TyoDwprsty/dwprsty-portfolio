@@ -16,12 +16,15 @@ import NextJsIcon from './social-icon/NextJs'
 import TypeScriptIcon from './social-icon/TypeScript'
 import NodeJsIcon from './social-icon/nodejs'
 import TailwindCSS from './social-icon/tailwindcss.svg'
+import { LanguageProvider, useLanguage } from '@/context/language-context'
 
 interface Project {
   id: string
   title: string
   description: string
+  description_id: string | null
   project_details: string
+  project_details_id: string | null
   techstack: string
   project_url: string
   image_url: string | null
@@ -32,10 +35,12 @@ interface MappedProject {
   id: string
   title: string
   description: string
+  description_id: string | null
   fullDescription: string
   techStack: string[]
   link?: string
   project_details: string
+  project_details_id: string | null
   techstack: string
   project_url: string
   image_url: string | null
@@ -44,7 +49,8 @@ interface MappedProject {
 
 type FormStatus = 'idle' | 'loading' | 'success' | 'error'
 
-export default function PortfolioClient({ projects }: { projects: Project[] }) {
+function PortfolioContent({ projects }: { projects: Project[] }) {
+  const { t, lang } = useLanguage()
   const [selectedProject, setSelectedProject] = useState<MappedProject | null>(null)
 
   // Contact form state
@@ -96,7 +102,7 @@ export default function PortfolioClient({ projects }: { projects: Project[] }) {
             transition={{ duration: 0.8, delay: 0.2 }}
             className="text-5xl sm:text-6xl lg:text-7xl font-bold mb-6 text-primary"
           >
-            Hi, I&apos;m Dwi
+            {t('hero_title')}
           </motion.h1>
           <motion.p
             initial={{ opacity: 0, y: 20 }}
@@ -104,8 +110,7 @@ export default function PortfolioClient({ projects }: { projects: Project[] }) {
             transition={{ duration: 0.8, delay: 0.4 }}
             className="text-xl text-secondary mb-8 leading-relaxed max-w-2xl mx-auto"
           >
-            Crafting beautiful, performant web experiences with modern technologies. Passionate about
-            clean code, user experience, and solving complex problems.
+            {t('hero_subtitle')}
           </motion.p>
           <motion.div
             initial={{ opacity: 0, y: 20 }}
@@ -119,7 +124,7 @@ export default function PortfolioClient({ projects }: { projects: Project[] }) {
               whileTap={{ scale: 0.95 }}
               className="px-8 py-3 bg-primary text-primary-foreground font-semibold rounded transition-colors"
             >
-              View My Work
+              {t('hero_cta_work')}
             </motion.a>
             <motion.a
               href="#contact"
@@ -127,7 +132,7 @@ export default function PortfolioClient({ projects }: { projects: Project[] }) {
               whileTap={{ scale: 0.95 }}
               className="px-8 py-3 bg-muted text-secondary font-semibold rounded border border-muted hover:border-primary hover:bg-[rgba(203,41,87,0.1)] transition-colors duration-300"
             >
-              Get in Touch
+              {t('hero_cta_contact')}
             </motion.a>
           </motion.div>
         </div>
@@ -143,24 +148,20 @@ export default function PortfolioClient({ projects }: { projects: Project[] }) {
             viewport={{ once: true }}
             className="text-4xl font-bold text-primary mb-8"
           >
-            About Me
+            {t('about_heading')}
           </motion.h2>
           <div className="grid md:grid-cols-2 gap-12">
             <div className="space-y-4">
-              {[
-                "I'm a full-stack developer with a passion for creating intuitive, high-performance web applications. With expertise in modern frontend frameworks and backend technologies, I deliver solutions that are both beautiful and functional.",
-                "My journey in tech started with curiosity about how things work on the internet. Over the years, I've developed a strong foundation in React, Next.js, Vue.js, and database design.",
-                "When I'm not coding, I enjoy learning new technologies, contributing to open-source projects, and exploring the intersection of design and development.",
-              ].map((text, index) => (
+              {(['about_p1', 'about_p2', 'about_p3'] as const).map((key, index) => (
                 <motion.p
-                  key={index}
+                  key={key}
                   initial={{ opacity: 0, y: 20 }}
                   whileInView={{ opacity: 1, y: 0 }}
                   transition={{ delay: index * 0.2, duration: 0.6 }}
                   viewport={{ once: true }}
                   className="text-foreground leading-relaxed"
                 >
-                  {text}
+                  {t(key)}
                 </motion.p>
               ))}
             </div>
@@ -172,7 +173,7 @@ export default function PortfolioClient({ projects }: { projects: Project[] }) {
               className="space-y-6"
             >
               <div>
-                <h3 className="text-lg font-semibold font-mono text-primary mb-3">Skills</h3>
+                <h3 className="text-lg font-semibold font-mono text-primary mb-3">{t('skills_heading')}</h3>
                 <div className="grid grid-cols-2 gap-2">
                   {[
                     'React',
@@ -234,7 +235,7 @@ export default function PortfolioClient({ projects }: { projects: Project[] }) {
             viewport={{ once: true }}
             className="text-4xl font-bold text-primary mb-4"
           >
-            Featured Projects
+            {t('projects_heading')}
           </motion.h2>
           <motion.p
             initial={{ opacity: 0 }}
@@ -243,14 +244,15 @@ export default function PortfolioClient({ projects }: { projects: Project[] }) {
             viewport={{ once: true }}
             className="text-secondary mb-12 text-lg"
           >
-            A selection of recent work that showcases my skills and expertise
+            {t('projects_subtext')}
           </motion.p>
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {projects.map((project) => {
               const mappedProject: MappedProject = {
                 ...project,
-                fullDescription: project.project_details,
+                description: (lang === 'id' && project.description_id) ? project.description_id : project.description,
+                fullDescription: (lang === 'id' && project.project_details_id) ? project.project_details_id : project.project_details,
                 techStack: project.techstack.split(',').map((t) => t.trim()),
                 link: project.project_url ? (project.project_url.startsWith('http') ? project.project_url : `https://${project.project_url}`) : undefined,
               }
@@ -276,16 +278,15 @@ export default function PortfolioClient({ projects }: { projects: Project[] }) {
             viewport={{ once: true }}
             className="text-4xl font-bold text-primary mb-8 text-center"
           >
-            Let&apos;s Connect
+            {t('contact_heading')}
           </motion.h2>
 
           <div className="grid md:grid-cols-2 gap-12">
             <div className="space-y-6">
               <div>
-                <h3 className="text-lg font-semibold text-primary mb-2">Get in Touch</h3>
+                <h3 className="text-lg font-semibold text-primary mb-2">{t('contact_subtitle_heading')}</h3>
                 <p className="text-foreground leading-relaxed">
-                  I&apos;m always interested in hearing about new projects and opportunities. Whether you have a
-                  question or just want to say hello, feel free to reach out!
+                  {t('contact_subtitle')}
                 </p>
               </div>
 
@@ -331,7 +332,7 @@ export default function PortfolioClient({ projects }: { projects: Project[] }) {
 
             <form className="space-y-4" onSubmit={handleContactSubmit}>
               <div>
-                <label htmlFor="contact-name" className="block text-sm font-medium text-primary mb-2">Name</label>
+                <label htmlFor="contact-name" className="block text-sm font-medium text-primary mb-2">{t('contact_name_label')}</label>
                 <input
                   id="contact-name"
                   type="text"
@@ -339,13 +340,13 @@ export default function PortfolioClient({ projects }: { projects: Project[] }) {
                   value={formName}
                   onChange={(e) => setFormName(e.target.value)}
                   className="w-full px-4 py-2 bg-card border border-muted rounded focus:outline-none focus:border-primary transition-colors text-foreground"
-                  placeholder="What you called as?"
+                  placeholder={t('contact_name_placeholder')}
                   disabled={formStatus === 'loading'}
                 />
               </div>
 
               <div>
-                <label htmlFor="contact-email" className="block text-sm font-medium text-primary mb-2">Email</label>
+                <label htmlFor="contact-email" className="block text-sm font-medium text-primary mb-2">{t('contact_email_label')}</label>
                 <input
                   id="contact-email"
                   type="email"
@@ -359,7 +360,7 @@ export default function PortfolioClient({ projects }: { projects: Project[] }) {
               </div>
 
               <div>
-                <label htmlFor="contact-message" className="block text-sm font-medium text-primary mb-2">Message</label>
+                <label htmlFor="contact-message" className="block text-sm font-medium text-primary mb-2">{t('contact_message_label')}</label>
                 <textarea
                   id="contact-message"
                   rows={5}
@@ -367,7 +368,7 @@ export default function PortfolioClient({ projects }: { projects: Project[] }) {
                   value={formMessage}
                   onChange={(e) => setFormMessage(e.target.value)}
                   className="w-full px-4 py-2 bg-card border border-muted rounded focus:outline-none focus:border-primary transition-colors text-foreground resize-none"
-                  placeholder="Feel free to drop couple words about why you're here..."
+                  placeholder={t('contact_message_placeholder')}
                   disabled={formStatus === 'loading'}
                 />
               </div>
@@ -388,7 +389,7 @@ export default function PortfolioClient({ projects }: { projects: Project[] }) {
                   animate={{ opacity: 1, scale: 1 }}
                   className="w-full px-4 py-3 bg-green-500/10 border border-green-500/30 text-green-400 font-semibold rounded text-center"
                 >
-                  ✓ Message sent! I&apos;ll get back to you soon.
+                  {t('contact_success')}
                 </motion.div>
               ) : (
                 <button
@@ -402,10 +403,10 @@ export default function PortfolioClient({ projects }: { projects: Project[] }) {
                         <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
                         <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8z" />
                       </svg>
-                      Sending...
+                      {t('contact_sending')}
                     </>
                   ) : (
-                    'Send Message'
+                    t('contact_send_btn')
                   )}
                 </button>
               )}
@@ -418,7 +419,7 @@ export default function PortfolioClient({ projects }: { projects: Project[] }) {
       <footer className="bg-muted/40 border-t border-muted py-8">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
           <p className="text-secondary text-sm">
-            © 2026 Dwprsty. All rights reserved. Built with React, Next.js, and Tailwind CSS.
+            {t('footer_text')}
           </p>
         </div>
       </footer>
@@ -432,5 +433,13 @@ export default function PortfolioClient({ projects }: { projects: Project[] }) {
         />
       )}
     </div>
+  )
+}
+
+export default function PortfolioClient({ projects }: { projects: Project[] }) {
+  return (
+    <LanguageProvider>
+      <PortfolioContent projects={projects} />
+    </LanguageProvider>
   )
 }

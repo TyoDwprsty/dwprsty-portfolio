@@ -648,14 +648,16 @@ enum one_time_token_type {
 
 
 model Project {
-  id              String   @id @default(uuid())
-  title           String
-  description     String
-  project_details String
-  techstack       String   // Can store comma-separated values
-  project_url     String
-  image_url       String?  // Drafted for later
-  created_at      DateTime @default(now())
+  id                  String   @id @default(uuid())
+  title               String
+  description         String
+  description_id      String?
+  project_details     String
+  project_details_id  String?
+  techstack           String   // Can store comma-separated values
+  project_url         String
+  image_url           String?  // Drafted for later
+  created_at          DateTime @default(now())
 
   @@map("projects")
   @@schema("public")
