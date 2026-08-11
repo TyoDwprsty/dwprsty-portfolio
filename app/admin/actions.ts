@@ -95,7 +95,7 @@ export async function polishWithAI(title: string, rawNotes: string): Promise<Pol
       "Authorization": `Bearer ${apiKey}`,
     },
     body: JSON.stringify({
-      model: "moonshotai/kimi-k2-instruct",
+      model: "llama3-70b-8192",
       temperature: 0.7,
       messages: [
         {
@@ -131,9 +131,10 @@ Important: Return only the JSON, no markdown, no code fences, no extra text.`,
   if (!content) throw new Error("Empty response from AI");
 
   try {
-    const parsed = JSON.parse(content) as PolishResult;
+    const cleanContent = content.replace(/```json\n?/g, "").replace(/```/g, "").trim();
+    const parsed = JSON.parse(cleanContent) as PolishResult;
     return parsed;
-  } catch {
+  } catch (e) {
     throw new Error("AI returned invalid JSON. Please try again.");
   }
 }
