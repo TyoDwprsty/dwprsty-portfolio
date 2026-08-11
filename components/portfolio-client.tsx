@@ -291,13 +291,13 @@ export default function PortfolioClient({ projects }: { projects: Project[] }) {
 
               <div className="space-y-3">
                 <a
-                  href="mailto:dwi@dwprsty.com"
+                  href="mailto:dwiprasetyo1103id@gmail.com"
                   className="flex items-center gap-3 p-4 bg-card border border-muted rounded hover:border-primary transition-colors group"
                 >
                   <MailFilledIcon className="text-primary group-hover:text-accent" size={24} />
                   <div>
                     <p className="text-sm font-semibold text-primary">Email</p>
-                    <p className="text-xs text-secondary">dwi@dwprsty.com</p>
+                    <p className="text-xs text-secondary">dwiprasetyo1103id@gmail.com</p>
                   </div>
                 </a>
 
