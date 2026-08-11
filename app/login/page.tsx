@@ -1,36 +1,19 @@
 "use client";
 
 import { createClient } from "@/utils/supabase/client";
-import { useRouter } from "next/navigation";
-import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 
 export default function LoginPage() {
-  const router = useRouter();
   const supabase = createClient();
-  const [loading, setLoading] = useState(true);
-
-  useEffect(() => {
-    // Check if user is already logged in
-    supabase.auth.getUser().then(({ data: { user } }) => {
-      if (user) {
-        router.push("/admin");
-      } else {
-        setLoading(false);
-      }
-    });
-  }, [router, supabase.auth]);
 
   const handleLogin = async () => {
     await supabase.auth.signInWithOAuth({
       provider: "google",
       options: {
-        redirectTo: `${window.location.origin}/auth/callback`,
+        redirectTo: `${window.location.origin}/api/auth/callback`,
       },
     });
   };
-
-  if (loading) return null;
 
   return (
     <div className="min-h-screen flex items-center justify-center text-foreground">

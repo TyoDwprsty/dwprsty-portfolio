@@ -21,13 +21,16 @@ export function ThemeToggle({ iconSize = 18 }: { iconSize?: number }) {
   }, []);
 
   useEffect(() => {
-    setMounted(true);
+    const timer = setTimeout(() => setMounted(true), 0);
     const savedTheme = localStorage.getItem("theme") as "dark" | "light" | null;
     const initialTheme = savedTheme ?? "dark";
     if (initialTheme !== "dark") {
-      setTheme(initialTheme);
-      applyTheme(initialTheme);
+      setTimeout(() => {
+        setTheme(initialTheme);
+        applyTheme(initialTheme);
+      }, 0);
     }
+    return () => clearTimeout(timer);
   }, [applyTheme]);
 
   const toggleTheme = () => {

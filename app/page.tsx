@@ -1,9 +1,10 @@
 import PortfolioClient from "@/components/portfolio-client";
 import { prisma } from "@/lib/prisma";
+import type { Project } from "@prisma/client";
 
 export default async function Home() {
   // Gracefully handle DB connection errors — site stays up even if DB isn't configured yet
-  let projects: any[] = [];
+  let projects: Project[] = [];
   try {
     projects = await prisma.project.findMany({
       orderBy: { created_at: "desc" },

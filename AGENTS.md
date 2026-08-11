@@ -9,11 +9,12 @@ This version has breaking changes — APIs, conventions, and file structure may 
 - **Framework**: Next.js 15 (App Router)
 - **Database ORM**: Prisma
 - **Database Provider**: Supabase PostgreSQL
-- **Authentication**: Supabase Auth (Google OAuth)
+- **Authentication**: Supabase Auth
 - **Styling**: Tailwind CSS, shadcn/ui
 - **Admin Protection**: Next.js Middleware checks Supabase Session and verifies email.
 
 **Key Conventions**:
-- Supabase Auth is used strictly for authentication and session management.
+- Supabase is used strictly for authentication and session management.
 - Prisma is used strictly for database querying and mutations.
-- Do not use Supabase JS Client for database queries (e.g., `supabase.from()`), use `prisma` instead.
+- **Code Quality**: All code must follow ESLint guidelines and pass `npm run lint`.
+- **Deployment Readiness**: Code must successfully pass `npm run build` before considering work finished.
