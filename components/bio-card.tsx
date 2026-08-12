@@ -88,7 +88,7 @@ export function BioCard() {
             />
             <div className="relative z-10 w-full h-full flex items-center justify-center overflow-hidden rounded-full">
               <Image 
-                src="/images/logo-dwprsty.webp" 
+                src="/images/logo-dprasetyo.webp" 
                 alt="Profile Logo" 
                 width={64} 
                 height={64} 

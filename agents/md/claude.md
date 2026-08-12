@@ -1,9 +1,11 @@
 # Portfolio Project Documentation
 
 ## Features & Additions
+
 This project is a modern, responsive developer portfolio built with performance, aesthetics, and high interactivity in mind.
 
 ### Core Technologies
+
 - **Framework:** Next.js 15 (App Router)
 - **Styling:** Tailwind CSS & Custom CSS Themes
 - **Animations:** Framer Motion
@@ -12,6 +14,7 @@ This project is a modern, responsive developer portfolio built with performance,
 - **Icons:** Custom animated SVG icons (React, Next.js, GitHub, LinkedIn, Globe, Mail, etc.) and Lucide React
 
 ### Key UI Features
+
 - **Dynamic Theming:** Seamless Dark/Light mode toggle with smooth color transitions across all components.
 - **Glassmorphism:** Frosted glass effects on the sticky Navbar (mobile and desktop) inspired by iOS liquid glass.
 - **Scroll Spy Navigation:** The Navbar automatically highlights the active section based on the user's scroll position in the viewport.
@@ -26,38 +29,48 @@ This project is a modern, responsive developer portfolio built with performance,
 To run this project on a new device, follow these steps:
 
 ### 1. Prerequisites
+
 - [Node.js](https://nodejs.org/) (v18 or newer recommended)
 - Git
 
 ### 2. Clone the Repository
+
 ```bash
 git clone <your-repository-url>
-cd portfolio-dwprsty
+cd portfolio-dprasetyo
 ```
 
 ### 3. Install Dependencies
+
 ```bash
 npm install
 ```
 
 ### 4. Environment Variables
+
 Copy the `.env.example` file to create a local `.env` file:
+
 ```bash
 cp .env.example .env
 ```
+
 Fill in your Supabase credentials and database URIs in the `.env` file (refer to the `.env.example` structure).
 
 ### 5. Database Setup (Prisma)
+
 Generate the Prisma client and push your schema to the Supabase database:
+
 ```bash
 npx prisma generate
 npx prisma db push
 ```
 
 ### 6. Start the Development Server
+
 ```bash
 npm run dev
 ```
+
 The site will be available at [http://localhost:3000](http://localhost:3000).
 
 ---
@@ -67,6 +80,7 @@ The site will be available at [http://localhost:3000](http://localhost:3000).
 The easiest way to deploy this Next.js application is via [Vercel](https://vercel.com).
 
 ### Step-by-Step Vercel Deployment:
+
 1. Push your code to a GitHub, GitLab, or Bitbucket repository.
 2. Log into [Vercel](https://vercel.com) and click **Add New > Project**.
 3. Import your repository.
@@ -82,6 +96,7 @@ The easiest way to deploy this Next.js application is via [Vercel](https://verce
 ---
 
 ## Environment Variables Reference (`.env.example`)
+
 ```env
 # Database Connection (Prisma)
 DATABASE_URL="postgresql://postgres:password@localhost:5432/postgres"

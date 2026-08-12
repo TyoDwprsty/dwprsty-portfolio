@@ -10,7 +10,7 @@ import {
 } from "react";
 import { translations, type Lang, type TranslationKey } from "@/lib/i18n";
 
-const STORAGE_KEY = "dwprsty_lang";
+const STORAGE_KEY = "dprasetyo_lang";
 
 interface LanguageContextValue {
   lang: Lang;

@@ -45,7 +45,7 @@ export async function POST(request: NextRequest) {
           <h3 style="color: #555; margin-bottom: 8px;">Message</h3>
           <p style="color: #333; line-height: 1.6; white-space: pre-wrap;">${message}</p>
           <hr style="border: none; border-top: 1px solid #eee; margin: 16px 0;" />
-          <p style="color: #999; font-size: 12px;">Sent from your portfolio contact form at dwprsty.com</p>
+          <p style="color: #999; font-size: 12px;">Sent from your portfolio contact form at dprasetyo.com</p>
         </div>
       `,
     })

@@ -173,7 +173,7 @@ export function Navbar() {
             transition={{ delay: 0.2, duration: 0.5 }}
             className="text-xl font-bold text-primary"
           >
-            Dwprsty
+            Dprasetyo
           </motion.div>
 
           {/* Mobile Controls */}

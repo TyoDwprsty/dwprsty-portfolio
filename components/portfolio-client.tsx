@@ -316,7 +316,7 @@ function PortfolioContent({ projects }: { projects: Project[] }) {
                 </a>
 
                 <a
-                  href="https://github.com/TyoDwprsty"
+                  href="https://github.com/Tyodwprsty"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="flex items-center gap-3 p-4 bg-card border border-muted rounded hover:border-primary transition-colors group"

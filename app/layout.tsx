@@ -20,7 +20,7 @@ const dmMono = DM_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Dwprsty - Fullstack Website Developer",
+  title: "Dprasetyo - Fullstack Website Developer",
   description: "I'm a Curious and self-learning person who loves to code and create new things. I'm a fullstack developer with experience in various technologies.",
   authors: [
     {

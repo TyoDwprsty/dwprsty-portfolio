@@ -46,7 +46,7 @@ export const translations = {
     contact_success: "✓ Message sent! I'll get back to you soon.",
 
     // Footer
-    footer_text: "© 2026 Dwprsty. All rights reserved. Built with React, Next.js, and Tailwind CSS.",
+    footer_text: "© 2026 Dprasetyo. All rights reserved. Built with React, Next.js, and Tailwind CSS.",
   },
 
   id: {
@@ -94,7 +94,7 @@ export const translations = {
     contact_success: "✓ Pesan terkirim! Saya akan segera merespons.",
 
     // Footer
-    footer_text: "© 2026 Dwprsty. Hak cipta dilindungi. Dibuat menggunakan React, Next.js, dan Tailwind CSS.",
+    footer_text: "© 2026 Dprasetyo. Hak cipta dilindungi. Dibuat menggunakan React, Next.js, dan Tailwind CSS.",
   },
 } as const;
 
