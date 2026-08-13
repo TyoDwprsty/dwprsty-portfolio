@@ -245,3 +245,39 @@
     opacity: 0.8;
   }
 }
+
+/* View Transitions for Theme Toggle
+   The ripple is a clip-path circle animated in theme-toggle.tsx.
+   Layering is set via data-theme-transition on <html>, which the toggle
+   sets BEFORE startViewTransition and clears when the animation finishes.
+   (Keying off html.dark/.light does not work here: the class is already
+   swapped to the incoming theme by the time these pseudo-elements exist.) */
+::view-transition-old(root),
+::view-transition-new(root) {
+  animation: none;
+  mix-blend-mode: normal;
+}
+
+/* light -> dark: the incoming dark frame washes over the top */
+html[data-theme-transition="to-dark"]::view-transition-old(root) {
+  z-index: 1;
+}
+html[data-theme-transition="to-dark"]::view-transition-new(root) {
+  z-index: 2;
+}
+
+/* dark -> light: the outgoing dark frame stays on top and gets vacuumed away */
+html[data-theme-transition="to-light"]::view-transition-old(root) {
+  z-index: 2;
+}
+html[data-theme-transition="to-light"]::view-transition-new(root) {
+  z-index: 1;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  ::view-transition-old(root),
+  ::view-transition-new(root) {
+    animation: none;
+    mix-blend-mode: normal;
+  }
+}
